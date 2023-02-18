@@ -20,16 +20,28 @@ class FamilyStructure:
         return randint(0, 99999999)
 
     def add_member(self, member):
-        # fill this method and update the return
-        pass
+        member["id"] = self._generateId()
+        self._members.append(member)
+        return member
 
     def delete_member(self, id):
-        # fill this method and update the return
-        pass
+        for i in range(len(self._members)):
+            if self._members[i]["id"] == id:
+                return self._members.pop(i)
+        raise ValueError(f"El integrante con el id {id} no fue encontrado")
+
+    def update_member(self, id, member):
+        for i in range(len(self._members)):
+            if self._members[i]["id"] == id:
+                self._members[i] = member
+                return self._members[i]
+        raise ValueError(f"El integrante con el id {id} no fue encontrado")
 
     def get_member(self, id):
-        # fill this method and update the return
-        pass
+        for member in self._members:
+            if member["id"] == id:
+                return member
+        raise ValueError(f"El integrante con el id {id} no fue encontrado")
 
     # this method is done, it returns a list with all the family members
     def get_all_members(self):

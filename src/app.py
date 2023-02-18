@@ -42,3 +42,40 @@ def handle_hello():
 if __name__ == '__main__':
     PORT = int(os.environ.get('PORT', 3000))
     app.run(host='0.0.0.0', port=PORT, debug=True)
+
+
+@app.route('/members', methods=['GET'])
+def get_all_members():
+    members = jackson_family.get_all_members()
+    return jsonify(members), 200
+
+@app.route('/member/<int:member_id>', methods=['GET'])
+def get_member(member_id):
+    member = jackson_family.get_member(member_id)
+    if member:
+        return jsonify(member), 200
+    else:
+        raise APIException('No se encontro el integrante de la familia', status_code=404)
+
+@app.route('/member', methods=['POST'])
+def create_member():
+    member = request.json
+    new_member = jackson_family.add_member(member)
+    return jsonify(new_member), 201
+
+@app.route('/member/<int:member_id>', methods=['PUT'])
+def update_member(member_id):
+    member = request.json
+    updated_member = jackson_family.update_member(member_id, member)
+    if updated_member:
+        return jsonify(updated_member), 200
+    else:
+        raise APIException('No se encontro el integrante de la familia', status_code=404)
+
+@app.route('/member/<int:member_id>', methods=['DELETE'])
+def delete_member(member_id):
+    deleted_member = jackson_family.delete_member(member_id)
+    if deleted_member:
+        return jsonify(deleted_member), 200
+    else:
+        raise APIException('No se encontro el integrante de la familia', status_code=404)
